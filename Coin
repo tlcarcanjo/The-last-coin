@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>The Last Coin</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #111;
+      color: #eee;
+      padding: 2rem;
+    }
+    h1 {
+      font-size: 2.5rem;
+      color: #00ffcc;
+    }
+    a {
+      color: #00ffff;
+    }
+    .button {
+      background: #00ffcc;
+      color: #000;
+      padding: 1rem;
+      text-decoration: none;
+      border-radius: 10px;
+      display: inline-block;
+      margin-top: 1rem;
+    }
+    code {
+      background: #222;
+      padding: 0.5rem;
+      display: block;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <h1>The Last Coin</h1>
+  <p>Uma última chance. Uma última moeda. Uma ferramenta para quem está acordando agora.</p>
+  <p><strong>DIY:</strong> Instale a carteira The Last Coin via Termux:</p>
+  <code>
+pkg update -y && pkg install -y git python rust clang libffi openssl make && git clone https://github.com/SeuUsuario/tlc-wallet.git && cd tlc-wallet && python setup.py install
+  </code>
+  <p>(Em breve espelhos descentralizados, APK e guia em PDF)</p>
+
+  <p><strong>Canal oficial:</strong> <a href="https://youtube.com/@TheLastCoin" target="_blank">@TheLastCoin</a></p>
+</body>
+</html>
