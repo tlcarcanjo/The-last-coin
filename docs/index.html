@@ -1,122 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>The Last Coin</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      margin: 0;
-      background: black;
-      color: #0f0;
-      font-family: monospace;
-      overflow: hidden;
-    }
+<!-- Responsive CNN-style News Ticker with Language Detection -->
+<div id="news-ticker" style="position: fixed; bottom: 0; width: 100%; background-color: #cc0000; color: white; font-family: Arial, sans-serif; font-weight: bold; font-size: 16px; z-index: 9999; overflow: hidden; height: 40px; display: flex; align-items: center;">
+  <div style="background: #990000; padding: 0 15px; height: 100%; display: flex; align-items: center;">BREAKING</div>
+  <div id="ticker-text" style="white-space: nowrap; animation: scroll-left 30s linear infinite; padding-left: 20px;"></div>
+</div>
 
-    canvas {
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: 0;
-      display: block;
-    }
+<style>
+@keyframes scroll-left {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
 
-    .welcome {
-      position: absolute;
-      top: 40%;
-      width: 100%;
-      text-align: center;
-      font-size: 2em;
-      z-index: 1;
-      color: #0f0;
-    }
+@media (max-width: 768px) {
+  #news-ticker {
+    font-size: 14px;
+    height: 36px;
+  }
+}
+</style>
 
-    .news-ticker {
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      background: rgba(0, 0, 0, 0.8);
-      color: #0f0;
-      padding: 10px;
-      font-size: 14px;
-      white-space: nowrap;
-      overflow: hidden;
-      z-index: 2;
-    }
+<script>
+  const tickerText = document.getElementById('ticker-text');
+  const userLang = navigator.language || navigator.userLanguage;
 
-    .news-text {
-      display: inline-block;
-      padding-left: 100%;
-      animation: ticker 20s linear infinite;
-    }
+  const news = {
+    en: "Massive blackout hits Europe | Cyberattack disrupts banking system in North America | Food and fuel shortages reported in South America | TLC Wallet gains 40% value in 24h | World leaders meet for emergency summit in Geneva",
+    pt: "Apagão atinge Europa | Ciberataque paralisa sistema bancário na América do Norte | Escassez de alimentos e combustível na América do Sul | Carteira TLC valoriza 40% em 24h | Líderes mundiais se reúnem em Genebra para cúpula de emergência",
+    es: "Apagón masivo en Europa | Ciberataque afecta sistema bancario en Norteamérica | Escasez de alimentos y combustible en Sudamérica | Billetera TLC sube un 40% en 24h | Líderes mundiales se reúnen en Ginebra para una cumbre de emergencia"
+  };
 
-    @keyframes ticker {
-      0% { transform: translateX(0%); }
-      100% { transform: translateX(-100%); }
-    }
-  </style>
-</head>
-<body>
-  <canvas id="matrixCanvas"></canvas>
-  <div class="welcome" id="welcomeMessage">Loading...</div>
-  <div class="news-ticker">
-    <div class="news-text">🚀 The Last Coin está chegando. 💻 Novas ferramentas serão lançadas. 🌐 Prepare-se para o impacto global...</div>
-  </div>
-
-  <script>
-    // Idioma
-    const userLang = navigator.language || navigator.userLanguage;
-    const lang = userLang.substring(0, 2);
-
-    const messages = {
-      en: "Welcome to The Last Coin",
-      pt: "Bem-vindo ao The Last Coin",
-      es: "Bienvenido a The Last Coin",
-      de: "Willkommen bei The Last Coin",
-      ja: "ザ・ラスト・コインへようこそ",
-      zh: "欢迎来到 The Last Coin"
-    };
-
-    const welcomeText = messages[lang] || messages.en;
-    document.getElementById("welcomeMessage").innerText = welcomeText;
-
-    // Matrix Animation
-    const canvas = document.getElementById("matrixCanvas");
-    const ctx = canvas.getContext("2d");
-
-    canvas.height = window.innerHeight;
-    canvas.width = window.innerWidth;
-
-    const letters = "01";
-    const fontSize = 14;
-    const columns = Math.floor(canvas.width / fontSize);
-    const drops = Array(columns).fill(1);
-
-    function drawMatrix() {
-      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      ctx.fillStyle = "#0f0";
-      ctx.font = fontSize + "px monospace";
-
-      for (let i = 0; i < drops.length; i++) {
-        const text = letters[Math.floor(Math.random() * letters.length)];
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-          drops[i] = 0;
-        }
-        drops[i]++;
-      }
-    }
-
-    setInterval(drawMatrix, 50);
-
-    // Atualiza tamanho se redimensionar
-    window.addEventListener('resize', () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    });
-  </script>
-</body>
-</html>
+  if (userLang.startsWith('pt')) {
+    tickerText.textContent = news.pt;
+  } else if (userLang.startsWith('es')) {
+    tickerText.textContent = news.es;
+  } else {
+    tickerText.textContent = news.en;
+  }
+</script>
