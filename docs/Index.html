@@ -1,1 +1,38 @@
+<!-- Responsive CNN-style News Ticker with Language Detection -->
+<div id="news-ticker" style="position: fixed; bottom: 0; width: 100%; background-color: #cc0000; color: white; font-family: Arial, sans-serif; font-weight: bold; font-size: 16px; z-index: 9999; overflow: hidden; height: 40px; display: flex; align-items: center;">
+  <div style="background: #990000; padding: 0 15px; height: 100%; display: flex; align-items: center;">BREAKING</div>
+  <div id="ticker-text" style="white-space: nowrap; animation: scroll-left 30s linear infinite; padding-left: 20px;"></div>
+</div>
 
+<style>
+@keyframes scroll-left {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+@media (max-width: 768px) {
+  #news-ticker {
+    font-size: 14px;
+    height: 36px;
+  }
+}
+</style>
+
+<script>
+  const tickerText = document.getElementById('ticker-text');
+  const userLang = navigator.language || navigator.userLanguage;
+
+  const news = {
+    en: "Massive blackout hits Europe | Cyberattack disrupts banking system in North America | Food and fuel shortages reported in South America | TLC Wallet gains 40% value in 24h | World leaders meet for emergency summit in Geneva",
+    pt: "Apagão atinge Europa | Ciberataque paralisa sistema bancário na América do Norte | Escassez de alimentos e combustível na América do Sul | Carteira TLC valoriza 40% em 24h | Líderes mundiais se reúnem em Genebra para cúpula de emergência",
+    es: "Apagón masivo en Europa | Ciberataque afecta sistema bancario en Norteamérica | Escasez de alimentos y combustible en Sudamérica | Billetera TLC sube un 40% en 24h | Líderes mundiales se reúnen en Ginebra para una cumbre de emergencia"
+  };
+
+  if (userLang.startsWith('pt')) {
+    tickerText.textContent = news.pt;
+  } else if (userLang.startsWith('es')) {
+    tickerText.textContent = news.es;
+  } else {
+    tickerText.textContent = news.en;
+  }
+</script>
