@@ -1,64 +1,122 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
   <title>The Last Coin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
       margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #0f0f0f;
-      color: #ffffff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      padding: 20px;
+      background: black;
+      color: #0f0;
+      font-family: monospace;
+      overflow: hidden;
     }
 
-    h1 {
-      color: #ffd700;
-      font-size: 3em;
-      margin-bottom: 0.5em;
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      display: block;
     }
 
-    p {
-      font-size: 1.2em;
-      max-width: 600px;
+    .welcome {
+      position: absolute;
+      top: 40%;
+      width: 100%;
       text-align: center;
-      margin-bottom: 2em;
+      font-size: 2em;
+      z-index: 1;
+      color: #0f0;
     }
 
-    .btn {
-      background-color: #ffd700;
-      color: #000;
-      text-decoration: none;
-      padding: 12px 24px;
-      border-radius: 30px;
-      font-weight: bold;
-      transition: background-color 0.3s ease;
+    .news-ticker {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      color: #0f0;
+      padding: 10px;
+      font-size: 14px;
+      white-space: nowrap;
+      overflow: hidden;
+      z-index: 2;
     }
 
-    .btn:hover {
-      background-color: #e6b800;
+    .news-text {
+      display: inline-block;
+      padding-left: 100%;
+      animation: ticker 20s linear infinite;
     }
 
-    footer {
-      margin-top: 50px;
-      font-size: 0.8em;
-      color: #888;
+    @keyframes ticker {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(-100%); }
     }
   </style>
 </head>
 <body>
-  <h1>The Last Coin</h1>
-  <p>Este é o início de algo revolucionário. Um experimento vivo. Um convite à liberdade. Um projeto para despertar o coletivo.</p>
-  <a class="btn" href="https://youtube.com" target="_blank">Ver Canal no YouTube</a>
+  <canvas id="matrixCanvas"></canvas>
+  <div class="welcome" id="welcomeMessage">Loading...</div>
+  <div class="news-ticker">
+    <div class="news-text">🚀 The Last Coin está chegando. 💻 Novas ferramentas serão lançadas. 🌐 Prepare-se para o impacto global...</div>
+  </div>
 
-  <footer>
-    © 2025 The Last Coin — Todos os direitos reservados
-  </footer>
+  <script>
+    // Idioma
+    const userLang = navigator.language || navigator.userLanguage;
+    const lang = userLang.substring(0, 2);
+
+    const messages = {
+      en: "Welcome to The Last Coin",
+      pt: "Bem-vindo ao The Last Coin",
+      es: "Bienvenido a The Last Coin",
+      de: "Willkommen bei The Last Coin",
+      ja: "ザ・ラスト・コインへようこそ",
+      zh: "欢迎来到 The Last Coin"
+    };
+
+    const welcomeText = messages[lang] || messages.en;
+    document.getElementById("welcomeMessage").innerText = welcomeText;
+
+    // Matrix Animation
+    const canvas = document.getElementById("matrixCanvas");
+    const ctx = canvas.getContext("2d");
+
+    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
+
+    const letters = "01";
+    const fontSize = 14;
+    const columns = Math.floor(canvas.width / fontSize);
+    const drops = Array(columns).fill(1);
+
+    function drawMatrix() {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = "#0f0";
+      ctx.font = fontSize + "px monospace";
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = letters[Math.floor(Math.random() * letters.length)];
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      }
+    }
+
+    setInterval(drawMatrix, 50);
+
+    // Atualiza tamanho se redimensionar
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  </script>
 </body>
 </html>
